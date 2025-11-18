@@ -7,8 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Favicon Links -->
     <link rel="shortcut icon" href="https://vtmacs.github.io/maebashi.jp/favicon.ico" type="image/vnd.microsoft.icon">
     <link rel="icon" href="https://vtmacs.github.io/maebashi.jp/favicon.ico" type="image/vnd.microsoft.icon">
     <link rel="apple-touch-icon-precomposed" href="https://vtmacs.github.io/maebashi.jp/favicon-152.png">
@@ -29,14 +27,14 @@
     <meta name="twitter:description" content="情報セキュリティの基礎概念（CIA）、マルウェアの種類、対策、実際の被害事例までを学ぶための資料です。">
     
     <!-- Chosen Palette: Calm Blue and Neutral -->
-    <!-- Application Structure Plan: 提供された詳細な補足資料に基づき、SPAの構造を再設計。ナビゲーションを「CIA」「対策の分類」「マルウェアの種類」「被害事例」「技術的脅威」「認証とデータ保護」「今からできる対策」の7つの主要タブに変更。この構造は、まず基礎概念(CIA, 対策分類)を提示し、次に主要な脅威(マルウェア, 事例)、具体的な技術領域(技術脅威, 認証/データ)、最後に実践的な行動(学生対策)へと続く論理的な学習フローを提供するために選択。各セクション内ではアコーディオン形式のカードを多用し、詳細な情報をコンパクトに提示、ユーザーが能動的に探索できるようにする。 -->
+    <!-- Application Structure Plan: 提供された詳細な補足資料に基づき、SPAの構造を再設計。ナビゲーションを「CIA」「対策の分類」「マルウェアの種類」「被害事例」「技術的脅威」「認証とデータ保護」「認証セキュリティの詳細」「今からできる対策」の8つの主要タブに変更。この構造は、まず基礎概念(CIA, 対策分類)を提示し、次に主要な脅威(マルウェア, 事例)、具体的な技術領域(技術脅威, 認証/データ, 認証詳細)、最後に実践的な行動(学生対策)へと続く論理的な学習フローを提供するために選択。各セクション内ではアコーディオン形式のカードを多用し、詳細な情報をコンパクトに提示、ユーザーが能動的に探索できるようにする。 -->
     <!-- Visualization & Content Choices: 
-        1. [CIA] 3要素 -> HTML/CSS 3カラムレイアウト -> 目的: 基本原則の提示 -> 理由: 静的な定義を明確に分類・表示するため。
-        2. [対策の分類] 技術・物理・人 -> アコーディオンカード +  -> 目的: 対策の全体像と多層防御の重要性を示す -> 理由: 3つの分類を個別に解説し、視覚的な図で補強するため。
-        3. [マルウェア] 概要と比較表 -> レスポンシブHTMLテーブル -> 目的: 各マルウェアの特徴(特に自己増殖と偽装)を一覧比較 -> 理由: 複雑な分類を整理し、違いを明確化するため。
-        4. [マルウェア] 詳細解説 -> アコーディオンカード -> 目的: 各マルウェア(ウイルス, ワーム...)の詳細な挙動や手口を解説 -> 理由: 概要表から一歩進んだ深い理解を促すため。
-        5. [被害事例] WannaCry, 名古屋港, Emotet -> 3カラムカード -> 目的: マルウェアの脅威を具体的な事例で示す -> 理由: 抽象的な脅威を現実のインシデントとして認識させるため。
-        6. [技術的脅威] OWASP Top 10 -> ドーナツチャート(Chart.js) -> 目的: Webアプリの脆弱性の傾向を視覚化 -> 理由: 多くの情報を含むOWASP Top 10の傾向を直感的に把握させるため。
+        1. [CIA] 3要素 -> HTML/CSS 3カラムレイアウト -> 目的: 基本原則の提示。
+        2. [対策の分類] 3分類 -> HTML/CSS 3カラムレイアウト -> 目的: 対策の全体像提示。
+        3. [マルウェア] 種別比較 -> HTMLテーブル -> 目的: 各マルウェアの「自己増殖能力」と「偽装」の違いを明確化。
+        4. [技術的脅威] OWASP Top 10 -> ドーナツチャート (Chart.js/Canvas) -> 目的: Web脅威の重要カテゴリを視覚化。
+        5. [被害事例] グラフ削除。
+        - 全てのトピック詳細は、HTMLのカードコンポーネント内に配置し、JSで表示/非表示を切り替えます。
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -63,10 +61,6 @@
         .content-section.active {
             display: block;
         }
-        .cia-card {
-            background-color: #f0f9ff;
-            border-left: 5px solid #0ea5e9;
-        }
         .topic-card {
             background-color: #ffffff;
             border-radius: 8px;
@@ -87,26 +81,9 @@
             display: none;
             padding: 1.5rem;
             border-top: 1px solid #e5e7eb;
-            line-height: 1.7;
         }
         .topic-card-content.open {
             display: block;
-        }
-        .topic-card-content h5 {
-            font-weight: 600;
-            color: #075985;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .topic-card-content ul, .topic-card-content ol {
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .topic-card-content ul {
-            list-style-type: disc;
-        }
-        .topic-card-content ol {
-            list-style-type: decimal;
         }
         .chart-container {
             position: relative;
@@ -122,51 +99,27 @@
                 height: 350px;
             }
         }
-        table {
-            min-width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
+        .table-auto th, .table-auto td {
+            padding: 0.75rem;
             border: 1px solid #e5e7eb;
-            padding: 0.75rem 1rem;
             text-align: left;
-            vertical-align: top;
         }
-        th {
+        .table-auto th {
             background-color: #f9fafb;
             font-weight: 600;
         }
-        tbody tr:nth-child(even) {
-            background-color: #fdfdfe;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-        .case-card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            height: 100%;
-        }
-        .case-card h4 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #be123c;
-            margin-bottom: 1rem;
+        .table-auto tr:nth-child(even) {
+            background-color: #f9fafb;
         }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <!-- ========== タイトルページを修正 ========== -->
+    <!-- ========== タイトルページ ========== -->
     <div id="title-page" class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8 text-center">
         <h1 class="text-5xl font-bold mb-4">情報セキュリティの基礎</h1>
         
-        <!-- 生成された画像をここに配置 -->
+        <!-- 画像 -->
         <img src="https://vtmacs.github.io/security/security.jpg" alt="サイバーセキュリティ イメージ" class="w-full max-w-2xl h-auto rounded-lg shadow-2xl mb-8" style="aspect-ratio: 16 / 9; object-fit: cover;">
         
         <button id="start-button" class="bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300">
@@ -174,25 +127,23 @@
         </button>
     </div>
 
-    <!-- ========== 既存のSPAコンテナ ========== -->
-    <!-- 既存のコンテナをIDでラップし、デフォルトで非表示(hidden)にする -->
-    <div id="app-container" class="hidden md:flex flex-col md:flex-row min-h-screen">
+    <!-- ========== メインコンテンツ（学習ページ） ========== -->
+    <div id="main-content" class="flex flex-col md:flex-row min-h-screen hidden">
         <!-- Sidebar Navigation -->
         <nav class="md:w-64 bg-white text-gray-800 shadow-lg md:h-screen md:sticky top-0">
             <div class="p-6">
-                <!-- h1とpを変更 -->
-                <h1 class="text-2xl font-bold text-sky-800">情報セキュリティの基礎</h1>
-                <p class="text-sm text-gray-600 mt-1">補足資料</p>
+                <h1 class="text-2xl font-bold text-sky-800">セキュリティ概論</h1>
+                <p class="text-sm text-gray-600 mt-1">ハンズオン以外の広範な世界</p>
             </div>
             <ul class="mt-4" id="navigation">
                 <li>
                     <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700 active" data-target="cia">
-                        <span class="mr-2">🏠</span> セキュリティの3要素 (CIA)
+                        <span class="mr-2">🏠</span> 基本概念 (CIA)
                     </button>
                 </li>
                 <li>
-                    <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="measures">
-                        <span class="mr-2">🛡️</span> 対策の分類 (技術・物理・人)
+                    <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="classification">
+                        <span class="mr-2">🗂️</span> セキュリティ対策の分類
                     </button>
                 </li>
                 <li>
@@ -200,24 +151,29 @@
                         <span class="mr-2">🦠</span> マルウェアの種類
                     </button>
                 </li>
-                <li>
-                    <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="cases">
-                        <span class="mr-2">🚨</span> マルウェア被害事例
+                 <li>
+                    <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="incidents">
+                        <span class="mr-2">🔥</span> 実際のマルウェア被害事例
                     </button>
                 </li>
                 <li>
                     <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="tech_threats">
-                        <span class="mr-2">💻</span> 技術的脅威の具体例
+                        <span class="mr-2">💻</span> 技術的脅威（Web・NW）
                     </button>
                 </li>
                 <li>
                     <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="auth_data">
-                        <span class="mr-2">🔑</span> 認証とデータ保護
+                        <span class="mr-2">🔒</span> 認証とデータ保護
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="auth_details">
+                        <span class="mr-2">🔑</span> 認証セキュリティの詳細
                     </button>
                 </li>
                 <li>
                     <button class="nav-button w-full text-left px-6 py-3 font-medium text-gray-700" data-target="student_actions">
-                        <span class="mr-2">🎓</span> 今からできる対策
+                        <span class="mr-2">🎓</span> 今からできるセキュリティ対策
                     </button>
                 </li>
             </ul>
@@ -230,262 +186,344 @@
             <section id="cia" class="content-section active">
                 <h2 class="text-3xl font-bold mb-4 text-sky-900">情報セキュリティの三大要素 (CIA)</h2>
                 <p class="text-lg text-gray-700 mb-6">
-                    情報セキュリティの3要素とは、機密性・完全性・可用性のことです。これら3つは情報資産を保護する基本原則で、頭文字をとって CIA とも呼ばれます。
+                    情報セキュリティの3要素とは、<strong>機密性(Confidentiality)・完全性(Integrity)・可用性(Availability)</strong>のことです。これら3つは情報資産を保護する基本原則で、頭文字をとって CIA とも呼ばれます。
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="cia-card p-6 rounded-lg shadow">
-                        <h4 class="text-xl font-bold text-sky-700 mb-2">機密性 (Confidentiality)</h4>
+                <p class="text-lg text-gray-700 mb-8">
+                    ハンズオンで学ぶファイアウォール設定やHTTPS化も、これらCIAを守るための具体的な手段の一つです。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-sky-100 border-l-4 border-sky-500 p-4 rounded-lg shadow">
+                        <h4 class="text-xl font-bold text-sky-800 mb-2">機密性 (Confidentiality)</h4>
                         <p class="text-gray-700">許可されたユーザーのみが情報にアクセスできるようにすること。不正アクセスや情報漏えいを防ぎ、個人情報や企業秘密を守ります。</p>
                     </div>
-                    <div class="cia-card p-6 rounded-lg shadow">
-                        <h4 class="text-xl font-bold text-sky-700 mb-2">完全性 (Integrity)</h4>
+                    <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded-lg shadow">
+                        <h4 class="text-xl font-bold text-green-800 mb-2">完全性 (Integrity)</h4>
                         <p class="text-gray-700">情報を正確かつ完全な状態に維持すること。改ざんや誤変更を防ぎ、データの信頼性を確保します。</p>
                     </div>
-                    <div class="cia-card p-6 rounded-lg shadow">
-                        <h4 class="text-xl font-bold text-sky-700 mb-2">可用性 (Availability)</h4>
-                        <p class="text-gray-700">必要なときに情報を利用可能な状態にしておくこと。システム障害や災害に備えてバックアップや冗長化を行い、サービス継続性を保ちます。</p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-lg shadow">
+                        <h4 class="text-xl font-bold text-yellow-800 mb-2">可用性 (Availability)</h4>
+                        <p class="text-gray-700">必要なときに情報を利用可能な状態にしておくこと。システム障害や災害に備え、サービス継続性を保ちます。</p>
                     </div>
                 </div>
-                <p class="text-lg text-gray-700">
-                    機密性・完全性・可用性はバランス良く維持する必要があります。例えば機密性ばかり強化しすぎると使い勝手が悪化し（可用性が低下）、逆に可用性だけ重視すると情報漏えいリスクが高まります（機密性が低下）。3要素すべてを満たすよう対策を講じることが重要です。
+                 <p class="text-lg text-gray-700 mt-8">
+                    これら機密性・完全性・可用性はバランス良く維持する必要があります。例えば機密性ばかり強化しすぎると使い勝手が悪化し（例：多要素認証を何回も要求する）、逆に可用性だけ重視すると情報漏えいリスクが高まります。3要素すべてを満たすよう対策を講じることが重要です。
                 </p>
             </section>
 
-            <!-- Measures Section -->
-            <section id="measures" class="content-section">
+            <!-- Classification Section -->
+            <section id="classification" class="content-section">
                 <h2 class="text-3xl font-bold mb-4 text-sky-900">セキュリティ対策の分類</h2>
                 <p class="text-lg text-gray-700 mb-8">
-                    情報セキュリティ対策はアプローチ別に大きく3種類に分類できます。実際の対策ではこれらを組み合わせ、多層的に防御することが重要です。
+                    情報セキュリティ対策は、そのアプローチによって大きく「技術的対策」「物理的対策」「人的対策」の3種類に分類できます。ハンズオンで行うファイアウォール設定は「技術的対策」の代表例です。
                 </p>
-                <div class="space-y-4">
-                    <div class="topic-card" data-topic="tech-measure">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">1. 技術的対策</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="topic-card">
+                        <div class="bg-blue-100 p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold text-blue-800">① 技術的対策</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p><strong>内容:</strong> システムやデータ、ネットワークへの攻撃に対し、ハードウェアやソフトウェアで防御する対策です。</p>
-                            <p><strong>具体例:</strong></p>
-                            <ul>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-2">ハードウェアやソフトウェアで、システムやネットワークを防御する対策です。</p>
+                            <strong class="text-gray-800">具体例:</strong>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
                                 <li>ウイルス対策ソフトの導入</li>
-                                <li>ファイアウォール（今回のハンズオンのテーマ）</li>
-                                <li>暗号化（HTTPSやデータ暗号化）</li>
-                                <li>IDS/IPS（不正侵入検知・防御システム）</li>
-                                <li>WAF（Webアプリケーションファイアウォール）</li>
-                                <li>ソフトウェア更新（脆弱性対応）</li>
+                                <li>ファイアウォールによる防御</li>
+                                <li>通信やデータの暗号化</li>
+                                <li>IDS/IPSによる侵入検知・防御</li>
+                                <li>ソフトウェアの脆弱性修正</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="physical-measure">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">2. 物理的対策</h3>
+                    <div class="topic-card">
+                        <div class="bg-orange-100 p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold text-orange-800">② 物理的対策</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p><strong>内容:</strong> 建物や設備への物理的な侵入や破壊を防ぐ対策です。</p>
-                            <p><strong>具体例:</strong></p>
-                            <ul>
-                                <li>入退室管理システム（鍵、スマートロック、生体認証）</li>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-2">建物や設備への物理的な侵入や破壊を防ぐ対策です。</p>
+                            <strong class="text-gray-800">具体例:</strong>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                                <li>入退室管理（鍵、認証カード）</li>
                                 <li>監視カメラや警備員による監視</li>
-                                <li>サーバー機器の施錠保管（サーバールーム）</li>
-                                <li>防火設備や非常電源の整備（災害対策）</li>
+                                <li>サーバールームの施錠管理</li>
+                                <li>防火設備や非常電源の整備</li>
+                                <li>災害対策</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="human-measure">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">3. 人的対策</h3>
+                    <div class="topic-card">
+                         <div class="bg-teal-100 p-4 rounded-t-lg">
+                            <h3 class="text-xl font-bold text-teal-800">③ 人的対策</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p><strong>内容:</strong> 人為的なミスや内部不正に対処する対策です。</p>
-                            <p><strong>具体例:</strong></p>
-                            <ul>
-                                <li>従業者に対するセキュリティ教育や訓練の実施</li>
-                                <li>明確な情報セキュリティポリシー・ルールの策定と周知</li>
-                                <li>内部不正への罰則規定整備</li>
-                                <li>ソーシャルエンジニアリング（フィッシング詐欺など）への注意喚起</li>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-2">人為的なミスや内部不正に対処する対策です。</p>
+                            <strong class="text-gray-800">具体例:</strong>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
+                                <li>従業者へのセキュリティ教育・訓練</li>
+                                <li>セキュリティポリシーの策定と周知</li>
+                                <li>ルール違反や内部不正への罰則整備</li>
+                                <li>ソーシャルエンジニアリングへの注意喚起</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 p-6 bg-white rounded-lg shadow">
-                    <h3 class="text-2xl font-bold mb-4 text-sky-800">多層防御の重要性</h3>
-                    <p class="text-gray-700 mb-4">
-                        完璧なセキュリティ対策は存在しません。そのため、どれか一つの対策に頼るのではなく、「技術的」「物理的」「人的」な対策を複数組み合わせ、何重にも防御壁を設ける「多層防御」の考え方が不可欠です。仮に一つの防御壁が突破されても、次の防御壁で攻撃を食い止めることを目指します。
-                    </p>
-                    
-                </div>
+                <p class="text-lg text-gray-700 mt-8 bg-white p-4 rounded-lg shadow">
+                    実際のセキュリティ対策ではこれら3種類を組み合わせ、技術・物理・人の全ての面から<strong>多層的に防御する</strong>ことが重要です。
+                </p>
             </section>
 
             <!-- Malware Section -->
             <section id="malware" class="content-section">
-                <h2 class="text-3xl font-bold mb-4 text-sky-900">マルウェアの種類</h2>
+                <h2 class="text-3xl font-bold mb-4 text-sky-900">マルウェアの種類と違い</h2>
                 <p class="text-lg text-gray-700 mb-6">
-                    <strong>マルウェア（Malware）</strong>とは「悪意のあるソフトウェア」の総称で、コンピュータやネットワークに害を与えるプログラム全般を指します。
+                    <strong>マルウェア (Malware)</strong> とは「悪意のあるソフトウェア」の総称で、コンピュータやネットワークに害を与えるプログラム全般を指します。
                 </p>
-                <h3 class="text-2xl font-bold mb-4 text-sky-800">主要なマルウェアの比較</h3>
-                <div class="table-wrapper mb-8">
-                    <table>
+                <p class="text-lg text-gray-700 mb-8">
+                    代表的なマルウェアには「ウイルス」「ワーム」「トロイの木馬」などがあり、それぞれ挙動や感染経路が異なります。特に「自己増殖能力」や「偽装」の手法に着目して違いを理解することが重要です。
+                </p>
+                
+                <div class="overflow-x-auto bg-white rounded-lg shadow mb-8">
+                    <table class="w-full table-auto">
                         <thead>
                             <tr>
-                                <th>マルウェアの種類</th>
-                                <th>自己増殖能力</th>
-                                <th>偽装手法</th>
-                                <th>主な特徴・挙動</th>
+                                <th class="w-1/4">マルウェアの種類</th>
+                                <th class="w-1/2">主な特徴（挙動の違い）</th>
+                                <th class="w-1/4">自己増殖</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody>
                             <tr>
-                                <td class="font-semibold">ウイルス</td>
-                                <td>あり (要宿主)</td>
-                                <td>ファイルに寄生</td>
-                                <td>プログラムやファイルに寄生して増殖。宿主ファイルが無いと増殖できない。</td>
+                                <td><strong>ウイルス</strong></td>
+                                <td>プログラムやファイルに<strong>寄生して</strong>増殖し、破壊活動などを行う。宿主ファイルが無いと増殖できない。</td>
+                                <td><span class="text-red-600 font-bold">◯ あり</span> (要宿主)</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">ワーム</td>
-                                <td>あり (単体)</td>
-                                <td>ネットワーク脆弱性を悪用</td>
-                                <td>宿主を必要とせず単体で動作。ネットワーク経由で爆発的に感染を広げる。</td>
+                                <td><strong>ワーム</strong></td>
+                                <td>ネットワーク上で<strong>単体で</strong>自己増殖し、他のシステムに感染を広げる。短時間で大規模感染を引き起こす。</td>
+                                <td><span class="text-red-600 font-bold">◯ あり</span> (単体)</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">トロイの木馬</td>
-                                <td>なし</td>
-                                <td>正常なソフトを装う</td>
-                                <td>無害なソフトを装い侵入。裏で情報窃取やバックドア設置を行う。</td>
+                                <td><strong>トロイの木馬</strong></td>
+                                <td><strong>正常なソフトを装い</strong>潜伏する。ユーザーに実行させて侵入し、情報窃取やバックドア設置を行う。</td>
+                                <td><span class="text-gray-600">✕ なし</span></td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">ランサムウェア</td>
-                                <td>一部あり (WannaCry等)</td>
-                                <td>様々 (メール添付など)</td>
-                                <td>データを暗号化し「人質」に取り、復元と引き換えに金銭を要求する。</td>
+                                <td><strong>ランサムウェア</strong></td>
+                                <td>データを暗号化して「人質」に取り、復元と引き換えに金銭を要求する。一部ワーム機能を持つ亜種も存在。</td>
+                                <td><span class="text-gray-600">△ (基本なし)</span></td>
                             </tr>
-                            <tr>
-                                <td class="font-semibold">スパイウェア</td>
-                                <td>なし</td>
-                                <td>密かに動作</td>
-                                <td>利用者に気付かれず密かに動作し、個人情報や機密情報を収集して外部送信する。</td>
+                             <tr>
+                                <td><strong>スパイウェア</strong></td>
+                                <td>利用者に気付かれず密かに動作し、個人情報や機密情報（キー入力など）を収集して外部に送信する。</td>
+                                <td><span class="text-gray-600">✕ なし</span></td>
                             </tr>
-                            <tr>
-                                <td class="font-semibold">アドウェア</td>
-                                <td>なし</td>
-                                <td>フリーソフトに付随</td>
-                                <td>ユーザーの許可なく広告を強制表示したり、閲覧履歴を収集する。（一部無害なものも有）</td>
+                             <tr>
+                                <td><strong>アドウェア</strong></td>
+                                <td>許可なく広告を表示したり、閲覧履歴を収集する。悪質なものはスパイウェアに近い挙動を示す。</td>
+                                <td><span class="text-gray-600">✕ なし</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h3 class="text-2xl font-bold mb-4 text-sky-800">各マルウェアの詳細解説</h3>
                 <div class="space-y-4">
-                    <div class="topic-card" data-topic="virus-detail">
+                    <div class="topic-card" data-topic="virus">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">ウイルス (Virus)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>自己増殖機能を持つマルウェアの一種で、感染したプログラムやファイルに寄生して広がります。単体では増殖できず必ず宿主となるファイルを必要とするため、USBメモリやメール添付ファイル経由で侵入し、PC内の実行ファイルや文書ファイルに潜伏・拡散するケースが典型的です。</p>
-                            <p>感染したウイルスは、情報の破壊や改ざん、動作妨害など様々な悪影響を及ぼします。例：LOVELETTERウイルス (2000年)。</p>
+                            <p><strong>概要:</strong> 自己増殖機能を持つマルウェアの一種で、感染したプログラムやファイルに「寄生」して広がります。単体では増殖できず、必ず宿主となるファイルを必要とします。</p>
+                            <p><strong>感染経路:</strong> USBメモリやメール添付ファイル経由で侵入し、PC内の実行ファイルや文書ファイルに潜伏・拡散するケースが典型的です。</p>
+                            <p><strong>被害:</strong> 情報の破壊や改ざん、動作妨害など。例として、メール添付で自己増殖し世界中で被害を与えた「LOVELETTERウイルス」(2000年)などがあります。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="worm-detail">
+                    <div class="topic-card" data-topic="worm">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">ワーム (Worm)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>ネットワーク上で自己増殖することを特徴とするマルウェアです。ユーザーの操作なしにネットワークの脆弱性を悪用して他のコンピュータに次々と侵入・感染を拡大します。ウイルスとは異なり宿主となるファイルを必要とせず単体で動作できるため、爆発的なスピードで広がる傾向があります。</p>
-                            <p>感染すると、ネットワーク帯域やシステム資源を大量消費し、業務に支障を来す場合があります。例：Confickerワーム (2008年)、WannaCry (2017年)。</p>
+                            <p><strong>概要:</strong> ネットワーク上で自己増殖することを特徴とします。ウイルスと異なり宿主ファイルを必要とせず、「単体で」動作可能です。</p>
+                            <p><strong>感染経路:</strong> ユーザーの操作なしにネットワークの脆弱性を悪用して、他のコンピュータに次々と侵入・感染を拡大します。ネットワーク経由で爆発的なスピードで広がる傾向があります。</p>
+                            <p><strong>被害:</strong> ネットワーク帯域やシステム資源を消費し尽くし、業務に支障を来します。例として、2008年に流行した「Conficker」ワームは世界で1,000万台以上が感染したとされています。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="trojan-detail">
+                    <div class="topic-card" data-topic="trojan">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">トロイの木馬 (Trojan Horse)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>一見無害なソフトウェアやファイルを装ってユーザーにインストール・実行させ、内部に潜伏するマルウェアです。名前はギリシャ神話に由来します。自己増殖能力はありませんが、ユーザーの操作によって自ら侵入する点が特徴です。</p>
-                            <p>感染すると、ユーザーが気付かない背後で不正活動が行われます。例えば、第三者が遠隔から出入りできる「裏口」（バックドア）を設置したり、キー入力情報を盗み出すキーロガーとして動作したりします。</p>
-                            <p>近年猛威を振るった「Emotet（エモテット）」は典型的なトロイの木馬型で、実在の組織からのメールを装った添付ファイルを開いて感染し、感染後はそのユーザーの連絡先へさらに偽メールを大量送信して拡散しました。</p>
+                            <p><strong>概要:</strong> 一見無害なソフトウェアやファイルを装ってユーザーにインストール・実行させ、内部に潜伏します。自己増殖能力はありませんが、ユーザーを油断させてシステム内部に侵入します。</p>
+                            <p><strong>動作:</strong> 感染に気付かないユーザーの背後で不正活動を行います。例：</p>
+                            <ul class="list-disc list-inside ml-4 mt-2">
+                                <li><strong>バックドア型:</strong> 攻撃者が遠隔から出入りできる「裏口」を設置します。</li>
+                                <li><strong>情報窃取型:</strong> キー入力（パスワードなど）を記録し、外部に送信します。</li>
+                                <li><strong>ダウンローダ型:</strong> 他のウイルスを勝手にダウンロードして実行します。</li>
+                            </ul>
+                            <p><strong>例:</strong> 日本でも猛威を振るった「Emotet」は典型的なトロイの木馬型で、実在の組織を装うメールで感染を広げ、感染後はさらに偽メールを大量送信して拡散しました。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="ransomware-detail">
+                    <div class="topic-card" data-topic="ransomware">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">ランサムウェア (Ransomware)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>近年特に深刻化しているマルウェアで、感染するとデータを勝手に暗号化して利用不能にし、その解除と引き換えに身代金（ランサム）を要求するものです。攻撃者は「データを元に戻したければ期限までに金銭を支払え」と脅迫します。</p>
-                            <!-- 2025年の事例をここにも追記 -->
-                            <p>感染経路はメール添付や不正サイト経由が一般的ですが、近年は企業のネットワークに侵入後に内部で仕掛ける標的型攻撃も増えています。被害に遭うと業務停止など甚大な被害が生じます。例：WannaCry (2017年)、名古屋港の事例 (2023年)、アサヒグループの事例 (2025年)、アスクルの事例 (2025年)。</p>
+                            <p><strong>概要:</strong> 近年最も深刻な脅威の一つ。感染するとデータを勝手に暗号化して利用不能にし、その解除（復号）と引き換えに身代金（ランサム）を要求します。</p>
+                            <p><strong>感染経路:</strong> メール添付や不正サイト経由のほか、近年はネットワークの脆弱性を突いて侵入し、内部で感染を広げる標的型攻撃も増えています。</p>
+                            <p><strong>被害:</strong> 業務に必要なファイルやデータベースが使えなくなり、業務停止や復旧コストなど甚大な被害が生じます。</p>
+                            <p><strong>例:</strong></p>
+                             <ul class="list-disc list-inside ml-4 mt-2">
+                                <li><strong>WannaCry (2017年):</strong> ワーム機能を併せ持ち、脆弱性を突いて自己拡散。世界150か国以上で大規模被害を引き起こしました。</li>
+                                <li><strong>アサヒグループの事例 (2025年):</strong> ロシア系集団の攻撃を受け、基幹システムが停止。国内工場の操業が停止し、ビールの出荷に深刻な影響が出ました。</li>
+                                <li><strong>アスクルの事例 (2025年):</strong> 法人向け・個人向け通販の受注・出荷システムが全面停止。大規模な物流の混乱と情報流出の可能性が報告されました。</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="spyware-detail">
+                    <div class="topic-card" data-topic="spyware">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">スパイウェア (Spyware)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>文字通り「スパイ」のようにユーザーに気付かれず密かに動作し、個人情報や機密情報を収集して外部に送信するマルウェアの総称です。キーロガー型（キー入力記録）やスクリーンキャプチャ型などがあり、パスワード等を盗み出します。</p>
-                            <p>フリーソフトに紛れてインストールされるケースや、他のマルウェアに二次感染するケースがあります。PCだけでなくスマートフォンを標的とするスパイウェアも存在します。</p>
+                            <p><strong>概要:</strong> 「スパイ」のようにユーザーに気付かれず密かに動作し、個人情報や機密情報を収集して外部に送信するマルウェアの総称です。</p>
+                            <p><strong>動作:</strong> パソコン上の動作を監視するタイプが多く、キーボード入力を記録する「キーロガー」型や、画面をキャプチャする型などがあります。ID・パスワードの窃取が主な目的です。</p>
+                            <p><strong>感染経路:</strong> 不正なWebサイトへのアクセスや、フリーソフトに紛れてインストールされるケースがあります。PCだけでなくスマートフォンを標的とするものも存在します。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="adware-detail">
+                    <div class="topic-card" data-topic="adware">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">アドウェア (Adware)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>ユーザーの許可なく広告を表示したり、行動を解析して広告配信に利用するプログラムです。本来はフリーソフト開発者が広告収入を得る目的のものもありますが、中には閲覧履歴を無断で収集・送信するなどスパイウェア的な側面を持つ悪質なものもあります。</p>
-                            <p>突然ポップアップ広告が頻繁に表示されたり、ブラウザのホームページが勝手に書き換えられるなどの症状が現れます。</p>
+                            <p><strong>概要:</strong> ユーザーの許可なく広告を表示したり、ユーザーの行動（閲覧履歴など）を解析して広告配信に利用するプログラムです。</p>
+                            <p><strong>特徴:</strong> フリーソフトの開発者が広告収入を得る目的のものなど、必ずしも悪意がない場合もあります。しかし、中には閲覧履歴を無断で収集・送信するなど、スパイウェア的な側面を持つ悪質なものも存在します。</p>
+                            <p><strong>症状:</strong> 突然ポップアップ広告が頻繁に表示されたり、ブラウザのホームページが勝手に書き換えられたりします。</p>
                         </div>
                     </div>
                 </div>
             </section>
-            
-            <!-- Cases Section -->
-            <section id="cases" class="content-section">
+
+            <!-- Incidents Section -->
+            <section id="incidents" class="content-section">
                 <h2 class="text-3xl font-bold mb-4 text-sky-900">実際のマルウェア被害事例</h2>
                 <p class="text-lg text-gray-700 mb-8">
-                    マルウェア感染は、情報漏えい、業務停止、金銭的被害など深刻な結果を招きます。
+                    マルウェア感染は、情報漏えいや業務停止、金銭的被害など深刻な結果を招きます。ここでは、近年発生した代表的な被害事例を紹介します。
                 </p>
-                <!-- 2025年の事例を追加 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="case-card">
-                        <h4>WannaCry（世界的ランサムウェア）</h4>
-                        <p class="text-gray-700"><strong>時期:</strong> 2017年5月<br><strong>手口:</strong> Windowsの脆弱性を悪用したワーム機能を持つランサムウェア。ネットワーク経由で自己増殖し、世界中に爆発的に感染。</p>
-                        <p class="text-gray-700 mt-4"><strong>被害:</strong> 150か国以上、約23万台以上のコンピュータが感染。イギリスの病院では医療システムが暗号化され手術延期に、ドイツ国鉄など各国のインフラも打撃を受けた。被害総額は約600億円以上と推計されています。</p>
+                <div class="space-y-6">
+                    <div class="topic-card" data-topic="incident-wannacry">
+                        <div class="topic-card-header bg-red-50 border-l-4 border-red-500">
+                            <h3 class="text-xl font-semibold text-red-800">世界的ランサムウェア被害（WannaCry, 2017年）</h3>
+                        </div>
+                        <div class="topic-card-content open">
+                            <p><strong>概要:</strong> 2017年5月、ランサムウェア「WannaCry」が世界中で大規模感染しました。Windowsの脆弱性を悪用した自己増殖型（ワーム機能）で、150以上の国・約23万台以上のコンピュータが感染する事態となりました。</p>
+                            <p><strong>被害:</strong> イギリスの病院では医療システムがダウンし手術が延期され、スペインの通信会社やドイツ国鉄など各国の企業インフラも打撃を受けました。被害総額は40億ドル（約600億円）以上とも推計され、史上最大級のランサムウェア事件となりました。</p>
+                        </div>
                     </div>
-                    <div class="case-card">
-                        <h4>名古屋港へのランサムウェア攻撃</h4>
-                        <p class="text-gray-700"><strong>時期:</strong> 2023年7月<br><strong>手口:</strong> 標的型ランサムウェア攻撃。</p>
-                        <p class="text-gray-700 mt-4"><strong>被害:</strong> 名古屋港のコンテナターミナル業務を管理する「荷役システム」が暗号化され使用不能に。港湾機能が丸一日以上停止し、物流に大きな支障が出た。重要インフラがサイバー攻撃の標的になるリスクを示す事例となりました。</p>
+                    
+                    <div class="topic-card" data-topic="incident-emotet">
+                        <div class="topic-card-header bg-yellow-50 border-l-4 border-yellow-500">
+                            <h3 class="text-xl font-semibold text-yellow-800">大規模メールウイルス感染（Emotet, 2019年以降）</h3>
+                        </div>
+                        <div class="topic-card-content open">
+                            <p><strong>概要:</strong> 2019年以降、日本国内で急増したトロイの木馬型マルウェア「Emotet」の被害例です。実在企業からのメールを装った不審な添付ファイルを開かせることで感染します。</p>
+                            <p><strong>被害:</strong> 感染後、被害者のメールアカウントを乗っ取り、アドレス帳の連絡先へ「その人になりすました」ウイルスメールを大量送信するため、雪だるま式に二次感染が広がりました。国内の官公庁や企業で感染報告が相次ぎ、社内メールサーバの停止や大規模なパスワード変更対応を余儀なくされました。</p>
+                        </div>
                     </div>
-                    <div class="case-card">
-                        <h4>Emotet（大規模メールウイルス）</h4>
-                        <p class="text-gray-700"><strong>時期:</strong> 2019年以降、日本で急増<br><strong>手口:</strong> トロイの木馬型。実在企業や取引先からのメールを装った添付ファイルを開かせて感染。感染後、被害者のメールアカウントとアドレス帳を盗み、その人になりすましてウイルスメールを大量送信し、雪だるま式に二次感染を広げました。</p>
-                        <p class="text-gray-700 mt-4"><strong>被害:</strong> 日本国内の官公庁や企業で感染報告が相次ぎ、社内メールサーバ停止や大規模なパスワード変更対応を余儀なくされました。</p>
+                    
+                    <div class="topic-card" data-topic="incident-nagoya">
+                        <div class="topic-card-header bg-blue-50 border-l-4 border-blue-500">
+                            <h3 class="text-xl font-semibold text-blue-800">国内港湾へのランサムウェア攻撃（名古屋港, 2023年）</h3>
+                        </div>
+                        <div class="topic-card-content open">
+                            <p><strong>概要:</strong> 2023年7月、名古屋港湾システムがランサムウェア攻撃を受け、港湾のコンテナターミナル業務が一時停止する深刻な被害が発生しました。</p>
+                            <p><strong>被害:</strong> 荷役システムが暗号化され使用不能となったため、港湾機能が丸一日以上停止し、物流に大きな支障が出ました。これは、サイバー攻撃が物理的な社会インフラを停止させうるリスクを示す事例です。</p>
+                        </div>
                     </div>
-                    <div class="case-card">
-                        <h4>アサヒグループ（ランサムウェア）</h4>
-                        <p class="text-gray-700"><strong>時期:</strong> 2025年9月<br><strong>手口:</strong> ロシア拠点のハッカー集団「Qilin」によるとされるランサムウェア攻撃。</p>
-                        <p class="text-gray-700 mt-4"><strong>被害:</strong> 基幹システムが停止し、国内のビール工場を含む複数が操業停止。出荷量が激減し、第3四半期の決算発表が延期された。後に個人情報の一部流出も確認されるなど、経営とサプライチェーンに甚大な影響が及びました。</p>
+                    
+                    <div class="topic-card" data-topic="incident-asahi-askul">
+                        <div class="topic-card-header bg-red-50 border-l-4 border-red-500">
+                            <h3 class="text-xl font-semibold text-red-800">国内大手企業へのランサムウェア攻撃（アサヒ・アスクル, 2025年）</h3>
+                        </div>
+                        <div class="topic-card-content open">
+                            <p><strong>概要:</strong> 2025年秋、アサヒグループとアスクルが相次いでランサムウェア攻撃の被害に遭いました。これらはロシアを拠点とするサイバー犯罪集団「Qilin」による犯行とされています。</p>
+                            <p><strong>被害:</strong></p>
+                            <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                                <li><strong>アサヒグループ:</strong> 基幹システムや国内工場が停止。特にビール工場が打撃を受け、主力製品の出荷が大幅に遅延・停止し、忘年会シーズンや歳暮商戦に深刻な影響を与えました。</li>
+                                <li><strong>アスクル:</strong> 法人向け「ASKUL」および個人向け「LOHACO」の受注・出荷システムが全面停止。長期間にわたり物流が麻痺し、多くの顧客（企業・個人）のサプライチェーンにも影響が及びました。</li>
+                            </ul>
+                            <p class="mt-2">これらの事件は、一つの企業への攻撃が、その取引先や消費者まで含めた社会全体に波及する「サプライチェーンリスク」の典型例となりました。</p>
+                        </div>
                     </div>
-                    <div class="case-card">
-                        <h4>アスクル（ランサムウェア）</h4>
-                        <p class="text-gray-700"><strong>時期:</strong> 2025年10月<br><strong>手口:</strong> ランサムウェアによるサイバー攻撃。</p>
-                        <p class="text-gray-700 mt-4"><strong>被害:</strong> 基幹システムが暗号化され、法人向け「ASKUL」および個人向け「LOHACO」の受注・出荷システムが全面停止。情報流出も確認され、「無印良品ネットストア」の配送が停止するなど、自社のみならず関連するサプライチェーンにも広範な影響が出ました。</p>
-                    </div>
+
                 </div>
             </section>
 
             <!-- Tech Threats Section -->
             <section id="tech_threats" class="content-section">
-                <h2 class="text-3xl font-bold mb-4 text-sky-900">技術的脅威の具体例</h2>
+                <h2 class="text-3xl font-bold mb-4 text-sky-900">技術的脅威（Web・NW）</h2>
                 <p class="text-lg text-gray-700 mb-8">
-                    マルウェア以外にも、システムやネットワーク、アプリケーションを直接狙う多様な攻撃手法が存在します。
+                    ハンズオンで扱うファイアウォールは「ネットワーク」を守る技術です。ここでは、ネットワークの他の脅威や、ハンズオンで構築する「Webアプリケーション」特有の脅威を紹介します。
                 </p>
 
-                <h3 class="text-2xl font-bold mb-4 text-sky-800">ネットワーク防御技術</h3>
-                <div class="space-y-4 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-sky-800">代表的なWebアプリの脆弱性</h3>
+                        <p class="text-gray-700 mb-4">
+                            ファイアウォールを通過した「正規の通信」であっても、その通信内容がWebアプリケーションの弱点を突く攻撃である場合があります。
+                        </p>
+                        <div class="space-y-4">
+                            <div class="topic-card" data-topic="sql-injection">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">SQLインジェクション</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> ユーザー入力欄に不正なSQL文（データベース操作言語）を「注入(inject)」し、データベースを不正に操作する攻撃。</p>
+                                    <p><strong>脅威:</strong> 個人情報などの機密データの窃取、データの改ざん、削除。</p>
+                                    <p><strong>対策:</strong> プレースホルダを用いたSQL文の組み立て（サニタイジング、エスケープ処理）。</p>
+                                </div>
+                            </div>
+                            <div class="topic-card" data-topic="xss">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">クロスサイトスクリプティング (XSS)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> 脆弱なWebサイトの入力フォーム（掲示板やコメント欄）に不正なスクリプトを仕掛け、他のユーザーのブラウザ上で実行させる攻撃。</p>
+                                    <p><strong>脅威:</strong> 悪意のあるサイトへの誘導、セッションID（クッキー）の窃取による「なりすまし」。</p>
+                                    <p><strong>対策:</strong> ユーザーからの入力をWebページに出力する際の適切なエスケープ処理。</p>
+                                </div>
+                            </div>
+                             <div class="topic-card" data-topic="csrf">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">CSRF (クロスサイトリクエストフォージェリ)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> 悪意のあるサイトに、「ログイン中の正規ユーザー」を誘導し、本人の意図しないリクエスト（例：パスワード変更、商品購入）をWebサービスに送信させる攻撃。</p>
+                                    <p><strong>脅威:</strong> ユーザーになりすまされて、意図しない操作を実行させられる。</p>
+                                    <p><strong>対策:</strong> トークン（ワンタイムの秘密の合言葉）を用いて、リクエストが正規の画面から送られたものかを確認する。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-sky-800">OWASP Top 10 (2021年版)</h3>
+                        <p class="text-gray-700 mb-4">
+                            OWASPはWebセキュリティの専門家コミュニティです。彼らが発表する「最も重大なWebアプリのセキュリティリスクTop 10」は、世界中の開発者の指針となっています。
+                        </p>
+                        <div class="chart-container bg-white p-4 rounded-lg shadow">
+                            <canvas id="owaspChart"></canvas>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2 text-center">※チャートはOWASP Top 10のカテゴリ（2021年版）の例です。</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold mt-12 mb-4 text-sky-800">ネットワーク防御の関連技術</h3>
+                <p class="text-gray-700 mb-4">
+                    ファイアウォール(FW)はネットワークの「門番」ですが、それだけでは防げない攻撃もあります。
+                </p>
+                <div class="space-y-4">
                     <div class="topic-card" data-topic="ids-ips">
                         <div class="topic-card-header">
                             <h3 class="text-xl font-semibold text-sky-800">IDS / IPS (不正侵入検知・防御システム)</h3>
                         </div>
                         <div class="topic-card-content">
                             <p><strong>概要:</strong> ネットワークやサーバーへの不正なアクセスや攻撃の「兆候」を検知し、管理者に通知(IDS)したり、通信を自動的にブロック(IPS)するシステムです。</p>
-                            <p><strong>ファイアウォールとの違い:</strong> ファイアウォールが「どのポート（扉）を通るか」をルールで決めるのに対し、IDS/IPSは「通信の中身（荷物）が怪しくないか」を監視します。</p>
+                            <p><strong>FWとの違い:</strong> FWが「どのポート（扉）を通るか」をルールで決めるのに対し、IDS/IPSは「通信の中身（荷物）が怪しくないか」を監視します。</p>
                         </div>
                     </div>
                     <div class="topic-card" data-topic="waf">
@@ -493,191 +531,231 @@
                             <h3 class="text-xl font-semibold text-sky-800">WAF (Web Application Firewall)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p><strong>概要:</strong> Webアプリケーションの通信に特化したファイアウォールです。HTTPSで暗号化された通信の「中身」を復号してチェックし、Webアプリ特有の攻撃（SQLインジェクションなど）から保護します。</p>
+                            <p><strong>概要:</strong> Webアプリケーションの通信に特化したファイアウォールです。HTTPSで暗号化された通信の「中身」を復号してチェックし、SQLインジェクションやXSSなどのWebアプリ特有の攻撃から保護します。</p>
                             <p><strong>ハンズオンとの関連:</strong> HTTPS(ポート443)を許可するだけでは、その443番ポートを通ってくるWebアプリへの攻撃は防げません。WAFはそこをカバーします。</p>
                         </div>
                     </div>
-                </div>
-
-                <h3 class="text-2xl font-bold mb-4 text-sky-800">代表的なWebアプリの脆弱性</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <div class="topic-card" data-topic="sql-injection">
-                            <div class="topic-card-header">
-                                <h3 class="text-xl font-semibold text-sky-800">SQLインジェクション</h3>
-                            </div>
-                            <div class="topic-card-content">
-                                <p><strong>概要:</strong> ユーザー入力欄に不正なSQL文（データベース操作言語）を「注入(inject)」し、データベースを不正に操作する攻撃。</p>
-                                <p><strong>脅威:</strong> 個人情報などの機密データの窃取、データの改ざん、削除。</p>
-                                <p><strong>対策:</strong> プレースホルダを用いたSQL文の組み立て（サニタイジング、エスケープ処理）。</p>
-                            </div>
-                        </div>
-                        <div class="topic-card" data-topic="xss">
-                            <div class="topic-card-header">
-                                <h3 class="text-xl font-semibold text-sky-800">クロスサイトスクリプティング (XSS)</h3>
-                            </div>
-                            <div class="topic-card-content">
-                                <p><strong>概要:</strong> 脆弱なWebサイトの入力フォームに不正なスクリプトを仕掛け、他のユーザーのブラウザ上で実行させる攻撃。</p>
-                                <p><strong>脅威:</strong> 悪意のあるサイトへの誘導、セッションID（クッキー）の窃取による「なりすまし」。</p>
-                                <p><strong>対策:</strong> ユーザーからの入力をWebページに出力する際の適切なエスケープ処理。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-bold mb-4 text-sky-800">OWASP Top 10</h4>
-                        <p class="text-gray-700 mb-4">
-                            OWASPはWebセキュリティの専門家コミュニティです。彼らが発表する「最も重大なWebアプリのセキュリティリスクTop 10」は、世界中の開発者の指針となっています。
-                        </p>
-                        <div class="chart-container bg-white p-4 rounded-lg shadow">
-                            <canvas id="owaspChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Auth/Data Section -->
-            <section id="auth_data" class="content-section">
-                <h2 class="text-3xl font-bold mb-4 text-sky-900">認証とデータ保護</h2>
-                <p class="text-lg text-gray-700 mb-8">
-                    Basic認証は、最も単純な「認証」の一つです。ここでは、より強力で現代的な「認証」と、認証後の「アクセス制御」、そして「データ」そのものの保護について紹介します。
-                </p>
-                <div class="space-y-4">
-                    <div class="topic-card" data-topic="mfa">
+                    <div class="topic-card" data-topic="vpn">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">多要素認証 (MFA)</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">VPN (仮想プライベートネットワーク)</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p><strong>概要:</strong> ログイン時に、複数の「要素」を組み合わせて本人確認を行う仕組み。パスワード（知識要素）が漏れても、他の要素で防御する。</p>
-                            <p><strong>要素の例:</strong></p>
-                            <ul>
-                                <li><strong>知識要素:</strong> パスワード、PINコード（本人が知っていること）</li>
-                                <li><strong>所持要素:</strong> スマートフォンの認証アプリ、SMS、物理キー（本人が持っているもの）</li>
-                                <li><strong>生体要素:</strong> 指紋、顔認証、静脈認証（本人そのもの）</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="topic-card" data-topic="oauth">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">OAuth / OpenID Connect</h3>
-                        </div>
-                        <div class="topic-card-content">
-                            <p><strong>概要:</strong> あるサービス（例：家計簿アプリ）が、ユーザーの許可を得て、別のサービス（例：Google）の特定のリソースにアクセスするための「認可」の仕組み(OAuth)。また、Googleアカウントで他のサービスに「ログイン」する仕組み(OpenID Connect)。</p>
-                            <p><strong>ポイント:</strong> ユーザーは、家計簿アプリにGoogleのパスワードを教える必要がありません。</p>
-                        </div>
-                    </div>
-                    <div class="topic-card" data-topic="encryption-at-rest">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">保存データの暗号化 (Encryption at Rest)</h3>
-                        </div>
-                        <div class="topic-card-content">
-                            <p><strong>概要:</strong> データベースやストレージに保存されているデータを暗号化すること。</p>
-                            <p><strong>ハンズオンとの関連:</strong> HTTPSは「通信中(in transit)」のデータを暗号化します。これは「保存されている(at rest)」データを守るための技術です。</p>
-                            <p><strong>脅威:</strong> サーバーに侵入されデータベースファイルを盗まれても、データが暗号化されていれば、中身を読み解くことが困難になります。</p>
-                        </div>
-                    </div>
-                    <div class="topic-card" data-topic="hashing">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">ハッシュ化 (Hashing)</h3>
-                        </div>
-                        <div class="topic-card-content">
-                            <p><strong>概要:</strong> 元のデータを、特定の計算（ハッシュ関数）によって、元に戻せない（不可逆な）固定長の文字列に変換すること。</p>
-                            <p><strong>用途:</strong> 主にパスワードの保存に使われます。Webサービスはユーザーのパスワードそのものではなく、「ハッシュ化されたパスワード」を保存します。ログイン時には、入力されたパスワードをハッシュ化し、保存されているハッシュ値と一致するかを比較します。</p>
+                            <p><strong>概要:</strong> インターネットなどの公衆網を介して、特定の組織（大学や企業）の内部ネットワークに安全に接続するための技術です。通信は暗号化され、「仮想的な専用トンネル」を通るイメージです。</p>
+                            <p><strong>用途:</strong> リモートワークで自宅から社内サーバにアクセスしたり、学外から大学の論文データベースにアクセスする際に使われます。</p>
                         </div>
                     </div>
                 </div>
             </section>
             
+            <!-- Auth & Data Section -->
+            <section id="auth_data" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-sky-900">認証とデータ保護</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    ハンズオンで扱うBasic認証は最も単純な「認証」の一つです。また、HTTPSは「通信中」のデータを守ります。ここでは、より高度な認証と、「保存されている」データを守る技術を紹介します。
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-sky-800">認証とアクセス制御</h3>
+                        <div class="space-y-4">
+                            <div class="topic-card" data-topic="mfa">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">多要素認証 (MFA)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> ログイン時に、複数の「要素」を組み合わせて本人確認を行う仕組み。パスワード（知識要素）が漏れても、他の要素で防御する。</p>
+                                    <p><strong>要素の例:</strong></p>
+                                    <ul class="list-disc list-inside ml-4 mt-2">
+                                        <li><strong>知識要素:</strong> パスワード、PINコード（知っていること）</li>
+                                        <li><strong>所持要素:</strong> スマホの認証アプリ、SMS（持っているもの）</li>
+                                        <li><strong>生体要素:</strong> 指紋、顔認証（本人そのもの）</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="topic-card" data-topic="oauth">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">OAuth / OpenID Connect</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> 「Googleアカウントでログイン」機能などの裏で動いている仕組み。あるサービス（例：家計簿アプリ）が、ユーザーの許可を得て、別のサービス（例：Google）のリソースにアクセスするための「認可」(OAuth)や「認証」(OpenID Connect)の仕組みです。</p>
+                                    <p><strong>ポイント:</strong> ユーザーは、家計簿アプリにGoogleのパスワードを教える必要がありません。</p>
+                                </div>
+                            </div>
+                            <div class="topic-card" data-topic="rbac">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">RBAC (ロールベースアクセス制御)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> 認証（本人確認）が済んだ後、「誰が」「何をしてよいか」を管理する「認可」の仕組みの一つ。ユーザー個人ではなく、「ロール（役割）」に対して権限を割り当てます。</p>
+                                    <p><strong>例:</strong> 大学のシステムで、「学生」ロールには履修登録の権限を、「教員」ロールには成績入力の権限を与える。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-bold mb-4 text-sky-800">データ保護</h3>
+                        <div class="space-y-4">
+                            <div class="topic-card" data-topic="encryption-at-rest">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">保存データの暗号化 (Encryption at Rest)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> データベースやストレージに「保存されている」データを暗号化すること。（HTTPSは「通信中」の暗号化）。</p>
+                                    <p><strong>脅威:</strong> もし攻撃者がサーバに侵入し、データベースファイルやバックアップファイルを丸ごと盗み出しても、データが暗号化されていれば、中身を読み解くことが困難になります。</p>
+                                </div>
+                            </div>
+                            <div class="topic-card" data-topic="hashing">
+                                <div class="topic-card-header">
+                                    <h3 class="text-xl font-semibold text-sky-800">ハッシュ化 (Hashing)</h3>
+                                </div>
+                                <div class="topic-card-content">
+                                    <p><strong>概要:</strong> 元のデータを、特定の計算（ハッシュ関数）によって、元に戻せない（不可逆な）固定長の文字列に変換すること。</p>
+                                    <p><strong>用途:</strong> 主にパスワードの保存に使われます。Webサービスはユーザーのパスワードそのものではなく、「ハッシュ化されたパスワード」を保存します。ログイン時には、入力されたパスワードをハッシュ化し、保存されているハッシュ値と一致するかを比較します。</p>
+                                    <p><strong>利点:</strong> データベースが漏洩しても、攻撃者はハッシュ値しか手に入れられず、元のパスワードを（簡単には）知ることができません。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auth Details Section -->
+            <section id="auth_details" class="content-section">
+                <h2 class="text-3xl font-bold mb-4 text-sky-900">認証セキュリティの詳細</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    「認証」は、情報工学を学ぶ皆さんにとって非常に重要なトピックです。ここでは、「パスワード管理」と「多要素認証」について、さらに詳しく掘り下げます。
+                </p>
+                <div class="space-y-4">
+                    <div class="topic-card" data-topic="password-management">
+                        <div class="topic-card-header">
+                            <h3 class="text-xl font-semibold text-sky-800">パスワード管理の重要性</h3>
+                        </div>
+                        <div class="topic-card-content">
+                            <p><strong>概要:</strong> パスワードは認証の基本ですが、多くのユーザーが「弱く」「使い回される」パスワードを利用しているため、攻撃の主要なターゲットとなっています。</p>
+                            <p class="mt-2"><strong>パスワード攻撃の手法:</strong></p>
+                            <ul class="list-disc list-inside ml-4 mt-2">
+                                <li><strong>ブルートフォース攻撃 (総当たり):</strong> 「a」から「zzzz...」まで、考えられる全ての文字列を試す方法。</li>
+                                <li><strong>辞書攻撃:</strong> 辞書に載っている単語や、よく使われるパスワードのリスト（例: "password", "123456"）を試す方法。</li>
+                                <li><strong>パスワードリスト攻撃:</strong> 他のサイトから漏洩したIDとパスワードのリストを使い、別のサイトでログインを試みる方法。（パスワード使い回しが致命的となる理由）</li>
+                            </ul>
+                            <p class="mt-2"><strong>なぜ「長く複雑な」パスワードが必要か:</strong> パスワードが長く、複雑（大文字・小文字・数字・記号を含む）であるほど、ブルートフォース攻撃や辞書攻撃で解読されるまでの時間が指数関数的に増加し、現実的な時間では解読が困難になるためです。</p>
+                            <p class="mt-2"><strong>対策:</strong></p>
+                            <ul class="list-disc list-inside ml-4 mt-2">
+                                <li>サービスごとに、ランダムで長く複雑なパスワードを生成する。</li>
+                                <li>それらを覚えるのは不可能なため、「パスワードマネージャー」を利用する。</li>
+                            </ul>
+                            <a href="https://vtmacs.github.io/vtmacs003b/password/" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-sky-600 hover:text-sky-800 font-medium">
+                                👉 パスワードチェッカー
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card" data-topic="mfa-details">
+                        <div class="topic-card-header">
+                            <h3 class="text-xl font-semibold text-sky-800">多要素認証 (MFA) の仕組み</h3>
+                        </div>
+                        <div class="topic-card-content">
+                            <p><strong>概要:</strong> 前述の通り、MFAは「知識」「所持」「生体」の3要素のうち、2つ以上を組み合わせて認証することです。パスワード（知識）が漏洩しても、他の要素（例：スマホ（所持））がなければログインできないため、セキュリティが飛躍的に向上します。</p>
+                            <p class="mt-2"><strong>MFAの主な方式:</strong></p>
+                            <ul class="list-disc list-inside ml-4 mt-2">
+                                <li><strong>SMS / 電話:</strong> ログイン時に、登録した電話番号にSMSで6桁のコードが送られてくる方式。手軽ですが、SIMスワップ（電話番号乗っ取り）のリスクがあります。</li>
+                                <li><strong>認証アプリ (TOTP):</strong> 「Google Authenticator」や「Microsoft Authenticator」などのアプリが、30秒ごとに変化する一時的なパスワード（Time-based One-Time Password）を生成する方式。SMSより安全とされています。</li>
+                                <li><strong>プッシュ通知:</strong> 認証アプリに「ログインを承認しますか？」という通知が届き、「はい」を押すだけで認証が完了する方式。利便性が高いです。</li>
+                                <li><strong>FIDO / WebAuthn (物理キー):</strong> YubiKeyなどのUSBキーや、PC/スマホの生体認証（指紋・顔）を「鍵」として使う、最も強力な方式の一つ。フィッシング耐性が非常に高いのが特徴です。</li>
+                            </ul>
+                            <p class="mt-2">ハンズオンで学ぶBasic認証は、パスワードのみ（単要素）で、しかもそのパスワードが暗号化されずにネットワークを流れるため、非常に脆弱です。現代のWebサービスでは、パスワードのハッシュ化保存とMFAの導入が必須となっています。</p>
+                             <a href="https://vtmacs.github.io/vtmacs003b/multi-factor/" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-sky-600 hover:text-sky-800 font-medium">
+                                👉 多要素認証シミュレーター
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Student Actions Section -->
             <section id="student_actions" class="content-section">
                 <h2 class="text-3xl font-bold mb-4 text-sky-900">学生が今からできるセキュリティ対策</h2>
                 <p class="text-lg text-gray-700 mb-8">
-                    情報工学を学ぶ皆さんが今から実践できる対策です。将来エンジニアとして活躍する際のセキュリティ意識向上につながります。
+                    情報工学を学ぶ皆さんが今から実践できる対策です。将来エンジニアとして活躍する際にも、これらのセキュリティ意識は必ず役立ちます。
                 </p>
-                <div class="space-y-4">
-                    <div class="topic-card" data-topic="action-update">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">1. ソフトウェアの更新</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">① ソフトウェアの更新</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>OSやアプリ、ウイルス対策ソフトを常に最新の状態に保ちましょう。古いバージョンのソフトには脆弱性が放置されている可能性があり、マルウェアに悪用されるリスクが高まります。自動更新を有効にし、サポートが切れた古いOSの使用は避けてください。</p>
+                        <div class="topic-card-content open">
+                            <p>OSやアプリ、ウイルス対策ソフトを常に最新の状態に保ちましょう。古いソフトの「脆弱性」は、マルウェアの格好の侵入経路となります。自動更新を有効にしてください。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="action-password">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">2. 強力なパスワード管理</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">② 強力なパスワード管理</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>推測されにくい長く複雑でユニークなパスワードを設定し、サービスごとに使い回さないようにします。覚えきれない場合は信頼できるパスワード管理ツールの利用も検討しましょう。</p>
+                        <div class="topic-card-content open">
+                            <p>推測されにくい長く複雑なパスワードを設定し、<strong class="text-red-600">サービスごとに絶対に使い回さない</strong>でください。パスワードリスト攻撃の標的になります。パスワード管理ツールの利用を推奨します。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="action-2fa">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">3. 二要素認証 (2FA) の活用</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">③ 多要素認証 (MFA/2FA) の活用</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>パスワードに加えてワンタイムコードや生体認証など二要素認証（2FA）を設定できるサービスでは必ず有効にしましょう。特にSNSやクラウドサービス、学校のアカウントなど重要なアカウントでは2FAを使って保護を強化してください。</p>
+                        <div class="topic-card-content open">
+                            <p>MFA（二要素認証）を設定できるサービスでは、必ず有効にしましょう。パスワードが漏洩しても、不正ログインのリスクを大幅に減らせます。特にSNSや学校のアカウントは必須です。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="action-email">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">4. 不審なメール・リンクに注意</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">④ 不審なメール・リンクに注意</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>ウイルス感染経路の大半はメールの添付ファイルや不正なリンク経由です。差出人不明なメールや、知人を装っていても不自然な日本語・内容のメールに添付されたファイルは絶対に開かないでください。巧妙なフィッシング詐げも増えているため、「送信元」「リンク先URL」「文面」に違和感があれば慎重に対処しましょう。</p>
+                        <div class="topic-card-content open">
+                            <p>マルウェア感染の多くはメールの添付ファイルや不正なリンク経由です（フィッシング詐欺）。知人を装っていても、不自然な日本語や内容の場合は疑い、添付ファイルやリンクを安易に開かないでください。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="action-sns">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">5. SNSのプライバシー設定</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">⑤ SNSのプライバシー設定</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>TwitterやInstagram等では公開範囲の設定を見直し、住所・電話番号・学生証番号など個人情報にあたる投稿は公開しないよう注意しましょう。プロフィールや投稿の公開範囲を「友人のみに限定」する、位置情報タグを外すなどの工夫で、不要な情報拡散を防げます。</p>
+                        <div class="topic-card-content open">
+                            <p>公開範囲の設定を見直し、住所・電話番号・学生証など個人が特定できる情報を投稿しないでください。位置情報タグにも注意し、不要な情報拡散を防ぎましょう。</p>
                         </div>
                     </div>
-                    <div class="topic-card" data-topic="action-software">
+                    <div class="topic-card">
                         <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">6. 信頼できるセキュリティソフトの利用</h3>
+                            <h3 class="text-xl font-semibold text-sky-800">⑥ データのバックアップ</h3>
                         </div>
-                        <div class="topic-card-content">
-                            <p>パソコンやスマートフォンにはウイルス対策ソフトをインストールし、常に有効化しておきましょう。合わせてOS標準のファイアウォール機能も有効化し、不要な通信が行われないようにしてください。</p>
-                        </div>
-                    </div>
-                    <div class="topic-card" data-topic="action-backup">
-                        <div class="topic-card-header">
-                            <h3 class="text-xl font-semibold text-sky-800">7. データのバックアップ</h3>
-                        </div>
-                        <div class="topic-card-content">
-                            <p>万一ウイルス感染やランサムウェア被害に遭っても重要データを失わないよう、日頃から定期的にバックアップを取っておく習慣をつけましょう。例えばレポートや研究データは外付けHDDやクラウドストレージにコピーを保管し、バックアップ先は普段はネットから切り離しておくと安全です。</p>
+                        <div class="topic-card-content open">
+                            <p>万一ランサムウェア被害に遭ってもデータを失わないよう、重要なデータ（レポートや研究データ）は定期的にバックアップを取りましょう。バックアップ先は普段はPCから切り離しておくとより安全です。</p>
                         </div>
                     </div>
                 </div>
+                 <p class="text-lg text-gray-700 mt-8 bg-white p-6 rounded-lg shadow">
+                    完璧な防御は困難ですが、「自分だけは大丈夫」と油断せず基本を徹底することが大切です。安全なIT社会を支える人材として、ぜひ今からセキュリティマインドを身につけてください。
+                </p>
             </section>
 
         </main>
     </div>
 
-    <!-- ========== JavaScriptの修正 ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             
-            // ========== タイトルページとアプリ本体の切り替え処理 ==========
-            const titlePage = document.getElementById('title-page');
-            const appContainer = document.getElementById('app-container');
             const startButton = document.getElementById('start-button');
-
-            // 既存のコンテンツコンテナ（appContainer）内の要素を取得
+            const titlePage = document.getElementById('title-page');
+            const mainContent = document.getElementById('main-content');
+            
             const navigation = document.getElementById('navigation');
             const navButtons = navigation.querySelectorAll('.nav-button');
-            const contentSections = appContainer.querySelectorAll('.content-section'); // appContainer内でクエリする
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            let owaspChartInstance = null;
+            let owaspChartCreated = false;
+            
+            // タイトルページからメインコンテンツへの切り替え
+            startButton.addEventListener('click', function() {
+                titlePage.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('flex');
+            });
 
-            if (startButton) {
-                startButton.addEventListener('click', () => {
-                    titlePage.style.display = 'none';
-                    appContainer.style.display = 'flex'; // hiddenを解除し、flexコンテナとして表示
-                });
-            }
-
-            // ========== サイドバーナビゲーションの処理 ==========
+            // サイドバーナビゲーションの処理
             navigation.addEventListener('click', function(e) {
                 const button = e.target.closest('.nav-button');
                 if (!button) return;
@@ -696,10 +774,19 @@
                         section.classList.remove('active');
                     }
                 });
+
+                // 「技術的脅威」タブがクリックされたらOWASPチャートを作成
+                if (targetId === 'tech_threats' && !owaspChartCreated) {
+                    // チャートが重複して作成されるのを防ぐ
+                    setTimeout(() => {
+                        createOwaspChart();
+                        owaspChartCreated = true; 
+                    }, 0);
+                }
             });
 
-            // ========== アコーディオン（トピックカード）の処理 ==========
-            appContainer.addEventListener('click', function(e) { // イベントリスナーをappContainerに設定
+            // トピックカード（アコーディオン）の処理
+            document.body.addEventListener('click', function(e) {
                 const header = e.target.closest('.topic-card-header');
                 if (!header) return;
 
@@ -711,20 +798,16 @@
                 }
             });
 
-            // ========== チャート描画処理 ==========
-            let owaspChartInstance = null; // Chart.jsインスタンスを保持する変数
             
             function createOwaspChart() {
                 const ctx = document.getElementById('owaspChart');
                 if (!ctx) return;
 
-                // 既存のチャートインスタンスがあれば破棄する
+                // 既存のチャートがあれば破棄する
                 if (owaspChartInstance) {
                     owaspChartInstance.destroy();
-                    owaspChartInstance = null; // 参照をクリア
                 }
                 
-                // new Chart() の結果をインスタンス変数に格納する
                 owaspChartInstance = new Chart(ctx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
@@ -765,44 +848,26 @@
                                 display: true,
                                 text: 'OWASP Top 10 (2021) - カテゴリ例',
                                 padding: { top: 10, bottom: 10 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
                             }
                         }
                     }
                 });
             }
 
-            // OWASPチャートを遅延描画（tech_threatsタブがアクティブになった時）
-            const techThreatsButton = document.querySelector('.nav-button[data-target="tech_threats"]');
-            let owaspChartInitialized = false; 
-            
-            if (techThreatsButton) {
-                // タブがクリックされた時にもチャート描画を試みる
-                techThreatsButton.addEventListener('click', () => {
-                    // タブがクリックされて表示が切り替わるのを待つ
-                    setTimeout(() => {
-                        if (!owaspChartInitialized) {
-                            const techThreatsSection = document.getElementById('tech_threats');
-                            if (techThreatsSection.classList.contains('active')) {
-                                createOwaspChart();
-                                owaspChartInitialized = true;
-                            }
-                        }
-                    }, 100); // 100ms待機
-                });
-
-                // 画面内に入った時にも描画を試みる（初回表示時など）
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting && !owaspChartInitialized) {
-                        const techThreatsSection = document.getElementById('tech_threats');
-                        if (techThreatsSection.classList.contains('active')) {
-                            createOwaspChart();
-                            owaspChartInitialized = true;
-                        }
-                    }
-                }, { threshold: 0.1 });
-
-                observer.observe(document.getElementById('tech_threats'));
-            }
         });
     </script>
 </body>
