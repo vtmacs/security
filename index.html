@@ -3,10 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>情報セキュリティ基礎とマルウェア</title>
+    <title>情報セキュリティの基礎</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon Links -->
+    <link rel="shortcut icon" href="https://vtmacs.github.io/maebashi.jp/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="icon" href="https://vtmacs.github.io/maebashi.jp/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon-precomposed" href="https://vtmacs.github.io/maebashi.jp/favicon-152.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="https://vtmacs.github.io/maebashi.jp/favicon-144.png">
+    
+    <!-- SNS (OGP) Tags -->
+    <meta property="og:title" content="情報セキュリティの基礎">
+    <meta property="og:description" content="情報セキュリティの基礎概念（CIA）、マルウェアの種類、対策、実際の被害事例までを学ぶための資料です。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://vtmacs.github.io/security/security.jpg">
+    <meta property="og:site_name" content="情報セキュリティの基礎">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://vtmacs.github.io/security/security.jpg">
+    <meta name="twitter:title" content="情報セキュリティの基礎">
+    <meta name="twitter:description" content="情報セキュリティの基礎概念（CIA）、マルウェアの種類、対策、実際の被害事例までを学ぶための資料です。">
+    
     <!-- Chosen Palette: Calm Blue and Neutral -->
     <!-- Application Structure Plan: 提供された詳細な補足資料に基づき、SPAの構造を再設計。ナビゲーションを「CIA」「対策の分類」「マルウェアの種類」「被害事例」「技術的脅威」「認証とデータ保護」「今からできる対策」の7つの主要タブに変更。この構造は、まず基礎概念(CIA, 対策分類)を提示し、次に主要な脅威(マルウェア, 事例)、具体的な技術領域(技術脅威, 認証/データ)、最後に実践的な行動(学生対策)へと続く論理的な学習フローを提供するために選択。各セクション内ではアコーディオン形式のカードを多用し、詳細な情報をコンパクトに提示、ユーザーが能動的に探索できるようにする。 -->
     <!-- Visualization & Content Choices: 
@@ -141,12 +162,27 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <div class="flex flex-col md:flex-row min-h-screen">
+    <!-- ========== タイトルページを修正 ========== -->
+    <div id="title-page" class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8 text-center">
+        <h1 class="text-5xl font-bold mb-4">情報セキュリティの基礎</h1>
+        
+        <!-- 生成された画像をここに配置 -->
+        <img src="https://vtmacs.github.io/security/security.jpg" alt="サイバーセキュリティ イメージ" class="w-full max-w-2xl h-auto rounded-lg shadow-2xl mb-8" style="aspect-ratio: 16 / 9; object-fit: cover;">
+        
+        <button id="start-button" class="bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300">
+            学習を開始する
+        </button>
+    </div>
+
+    <!-- ========== 既存のSPAコンテナ ========== -->
+    <!-- 既存のコンテナをIDでラップし、デフォルトで非表示(hidden)にする -->
+    <div id="app-container" class="hidden md:flex flex-col md:flex-row min-h-screen">
         <!-- Sidebar Navigation -->
         <nav class="md:w-64 bg-white text-gray-800 shadow-lg md:h-screen md:sticky top-0">
             <div class="p-6">
-                <h1 class="text-2xl font-bold text-sky-800">セキュリティ概論</h1>
-                <p class="text-sm text-gray-600 mt-1">情報セキュリティ基礎とマルウェア</p>
+                <!-- h1とpを変更 -->
+                <h1 class="text-2xl font-bold text-sky-800">情報セキュリティの基礎</h1>
+                <p class="text-sm text-gray-600 mt-1">補足資料</p>
             </div>
             <ul class="mt-4" id="navigation">
                 <li>
@@ -373,6 +409,7 @@
                         </div>
                         <div class="topic-card-content">
                             <p>近年特に深刻化しているマルウェアで、感染するとデータを勝手に暗号化して利用不能にし、その解除と引き換えに身代金（ランサム）を要求するものです。攻撃者は「データを元に戻したければ期限までに金銭を支払え」と脅迫します。</p>
+                            <!-- 2025年の事例をここにも追記 -->
                             <p>感染経路はメール添付や不正サイト経由が一般的ですが、近年は企業のネットワークに侵入後に内部で仕掛ける標的型攻撃も増えています。被害に遭うと業務停止など甚大な被害が生じます。例：WannaCry (2017年)、名古屋港の事例 (2023年)、アサヒグループの事例 (2025年)、アスクルの事例 (2025年)。</p>
                         </div>
                     </div>
@@ -403,6 +440,7 @@
                 <p class="text-lg text-gray-700 mb-8">
                     マルウェア感染は、情報漏えい、業務停止、金銭的被害など深刻な結果を招きます。
                 </p>
+                <!-- 2025年の事例を追加 -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="case-card">
                         <h4>WannaCry（世界的ランサムウェア）</h4>
@@ -585,7 +623,7 @@
                             <h3 class="text-xl font-semibold text-sky-800">4. 不審なメール・リンクに注意</h3>
                         </div>
                         <div class="topic-card-content">
-                            <p>ウイルス感染経路の大半はメールの添付ファイルや不正なリンク経由です。差出人不明なメールや、知人を装っていても不自然な日本語・内容のメールに添付されたファイルは絶対に開かないでください。巧妙なフィッシング詐欺も増えているため、「送信元」「リンク先URL」「文面」に違和感があれば慎重に対処しましょう。</p>
+                            <p>ウイルス感染経路の大半はメールの添付ファイルや不正なリンク経由です。差出人不明なメールや、知人を装っていても不自然な日本語・内容のメールに添付されたファイルは絶対に開かないでください。巧妙なフィッシング詐げも増えているため、「送信元」「リンク先URL」「文面」に違和感があれば慎重に対処しましょう。</p>
                         </div>
                     </div>
                     <div class="topic-card" data-topic="action-sns">
@@ -618,13 +656,28 @@
         </main>
     </div>
 
+    <!-- ========== JavaScriptの修正 ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             
+            // ========== タイトルページとアプリ本体の切り替え処理 ==========
+            const titlePage = document.getElementById('title-page');
+            const appContainer = document.getElementById('app-container');
+            const startButton = document.getElementById('start-button');
+
+            // 既存のコンテンツコンテナ（appContainer）内の要素を取得
             const navigation = document.getElementById('navigation');
             const navButtons = navigation.querySelectorAll('.nav-button');
-            const contentSections = document.querySelectorAll('.content-section');
+            const contentSections = appContainer.querySelectorAll('.content-section'); // appContainer内でクエリする
 
+            if (startButton) {
+                startButton.addEventListener('click', () => {
+                    titlePage.style.display = 'none';
+                    appContainer.style.display = 'flex'; // hiddenを解除し、flexコンテナとして表示
+                });
+            }
+
+            // ========== サイドバーナビゲーションの処理 ==========
             navigation.addEventListener('click', function(e) {
                 const button = e.target.closest('.nav-button');
                 if (!button) return;
@@ -645,7 +698,8 @@
                 });
             });
 
-            document.body.addEventListener('click', function(e) {
+            // ========== アコーディオン（トピックカード）の処理 ==========
+            appContainer.addEventListener('click', function(e) { // イベントリスナーをappContainerに設定
                 const header = e.target.closest('.topic-card-header');
                 if (!header) return;
 
@@ -657,6 +711,7 @@
                 }
             });
 
+            // ========== チャート描画処理 ==========
             let owaspChartInstance = null; // Chart.jsインスタンスを保持する変数
             
             function createOwaspChart() {
@@ -721,6 +776,21 @@
             let owaspChartInitialized = false; 
             
             if (techThreatsButton) {
+                // タブがクリックされた時にもチャート描画を試みる
+                techThreatsButton.addEventListener('click', () => {
+                    // タブがクリックされて表示が切り替わるのを待つ
+                    setTimeout(() => {
+                        if (!owaspChartInitialized) {
+                            const techThreatsSection = document.getElementById('tech_threats');
+                            if (techThreatsSection.classList.contains('active')) {
+                                createOwaspChart();
+                                owaspChartInitialized = true;
+                            }
+                        }
+                    }, 100); // 100ms待機
+                });
+
+                // 画面内に入った時にも描画を試みる（初回表示時など）
                 const observer = new IntersectionObserver((entries) => {
                     if (entries[0].isIntersecting && !owaspChartInitialized) {
                         const techThreatsSection = document.getElementById('tech_threats');
@@ -732,18 +802,6 @@
                 }, { threshold: 0.1 });
 
                 observer.observe(document.getElementById('tech_threats'));
-
-                techThreatsButton.addEventListener('click', () => {
-                    // if (!owaspChartInitialized) { // チェックをここから移動
-                        setTimeout(() => {
-                            // setTimeoutの中でフラグをチェックする
-                            if (!owaspChartInitialized) {
-                                createOwaspChart();
-                                owaspChartInitialized = true;
-                            }
-                        }, 100); 
-                    // }
-                });
             }
         });
     </script>
